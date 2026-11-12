@@ -8,12 +8,16 @@ FastAPI backend, React (Vite + TypeScript) frontend, Claude via the Anthropic AP
 
 ## Run it
 
-Requires Python 3.12+ and Node 20+.
+Requires Python 3.10+ and Node 20+.
+
+**Quickest:** `./start.sh` installs dependencies on first run, starts both servers, and prints the URL (http://localhost:5173). To use Claude, copy `backend/.env.example` to `backend/.env` and add your API key; without one the app runs the labelled stub.
+
+Step by step:
 
 ```bash
 # Backend
 cd backend
-python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
+python3 -m venv .venv          # Python 3.10+ && .venv/bin/pip install -r requirements.txt
 cp .env.example .env               # then put your key in .env (git-ignored); without one the app runs the labelled stub
 .venv/bin/uvicorn app.main:app --port 8000
 
@@ -100,6 +104,10 @@ Three layers, cheapest first:
 [FILL: actual time, in your own words.]
 
 Next: run the LLM eval and fix what it finds; a per-claim grounding check (figure bound to entity); a role directory so approver authority can be checked; chat persistence; streaming.
+
+## Design document
+
+[`docs/DESIGN.md`](docs/DESIGN.md): the three architectures considered, the stage-by-stage design (built vs planned), the data findings, hallucination handling, the eval rubric and statistics, and production needs.
 
 ## How I worked with AI
 
