@@ -5,3 +5,4 @@ pydantic>=2.7
 pytest>=8.0
 httpx2
 httpx
+python-dotenv>=1.0

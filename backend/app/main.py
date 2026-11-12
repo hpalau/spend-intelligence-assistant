@@ -5,7 +5,9 @@ from __future__ import annotations
 import logging
 import os
 from collections import defaultdict
+from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -18,6 +20,9 @@ from .schemas import AskRequest, AskResponse, ControlLine, CurrencyLine, ErrorBo
 from .tools import PO_THRESHOLD_EUR, Toolbox
 
 log = logging.getLogger("spend")
+
+# Secrets come from the environment or an untracked backend/.env file, never from code.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 data = SpendData()
 policy = Policy()

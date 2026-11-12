@@ -14,7 +14,7 @@ Requires Python 3.12+ and Node 20+.
 # Backend
 cd backend
 python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
-export ANTHROPIC_API_KEY=...        # optional: without it the app runs the labelled stub
+cp .env.example .env               # then put your key in .env (git-ignored); without one the app runs the labelled stub
 .venv/bin/uvicorn app.main:app --port 8000
 
 # Frontend (second terminal)
