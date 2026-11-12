@@ -1,6 +1,6 @@
 # How this was built with AI
 
-**Tool:** Claude Code (CLI), model Claude Opus 5.5, in one session on 9 November 2026.
+**Tool:** Claude Code (CLI), model Claude Opus 5.5, over sessions on 9, 12 and 13 November 2026.
 **Harness:** [`CLAUDE.md`](../CLAUDE.md) at the repo root. My personal Claude Code configuration, which covers unrelated projects, is not included.
 
 ## The prompts
@@ -24,6 +24,14 @@
 | When is the interview? | Within a week |
 
 After that, Claude built it. The steps are below.
+
+## Later prompts (summarised; excerpts verbatim)
+
+4. **Pressure-testing the architecture** (9 Nov): *"shall we break each detailed requirement as an agent that does the data sourcing, another one that checks the data against the task, another one that checks the document [...] is the latest version [...] this way we could have more control over the process, have audit trails for each step"*, plus topics: context, eval dataset, hallucinations, RAG, vector database or not, declining and clarifying.
+   - **Claude's response:** keep the separation and the per-step audit, but as code stages, not LLM agents. Reasons: compounding error, correlated model mistakes, cost and latency.
+   - **My decision:** adopt "stages, not agents" (Architecture 3 in `DESIGN.md`).
+5. **Reviewing my notes document** (12 Nov). Claude found errors, including a mislabelled architecture, the extras listed as all required, and a misuse of Cohen's kappa. I corrected the notes. One point was mine and new: locale-dependent number formats ("60.000" in Spain means sixty thousand).
+6. **Completion and sharing** (13 Nov): how to test locally and with an API key, the right statistics for scoring answers, the design document, and publishing to GitHub.
 
 ## Who decided what
 
