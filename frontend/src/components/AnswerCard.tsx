@@ -5,6 +5,7 @@ const SOURCE_LABEL: Record<Source, string> = { invoice_data: "Invoice data", pol
 
 const STATUS_LABEL: Record<AskResponse["status"], string> = {
   answered: "Answered",
+  clarify: "Needs clarification",
   declined: "Cannot answer from available data",
   unverified: "Unverified: check before relying on this",
 };

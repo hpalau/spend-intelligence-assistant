@@ -48,6 +48,8 @@ button:disabled { opacity: .5; cursor: default; }
 .answer { border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 12px; }
 .answer-answered { border-left-color: var(--ok); }
 .answer-declined { border-left-color: var(--muted); }
+.answer-clarify { border-left-color: var(--info); }
+.answer-pill-clarify { background: var(--info-bg); color: var(--info); border-color: transparent; }
 .answer-unverified { border-left-color: var(--bad); }
 .answer-head { display: flex; gap: 8px; margin-bottom: 8px; }
 .answer-text { margin: 10px 0; line-height: 1.5; }

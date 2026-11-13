@@ -56,7 +56,7 @@ Things the data forced:
 
 Three layers, cheapest first:
 1. **Deterministic layer, unit-tested** (`backend/tests`): FX conversion, band boundaries (50,000.00 vs 50,000.01), totals that reconcile, rule checks. If these are wrong, nothing above them can be right.
-2. **End-to-end eval** (`eval/cases.json`, 10 cases). Golden answers come from `compute_golden.py`, which shares no code with the app; golden values taken from the app's own tools would make the eval circular. Each case scores status, route (required and forbidden sources), expected figures (to 0.5%), required phrases, forbidden phrases, citations, and the grounding check. The set covers the three brief questions, a currency trap (GBP 45,000 looks like a Department Head approval but converts to EUR 53,355.47, a Finance Director), must-decline cases (2024 data, segregation of duties) and a prompt injection. Run it on every prompt or model change and track each check's pass rate, not just one total. False declines count as failures, because over-refusal is also a quality problem.
+2. **End-to-end eval** (`eval/cases.json`, 10 cases). Golden answers come from `compute_golden.py`, which shares no code with the app; golden values taken from the app's own tools would make the eval circular. Each case scores status, route (required and forbidden sources), expected figures (to 0.5%), required phrases, forbidden phrases, citations, and the grounding check. The set covers the three brief questions, a currency trap (GBP 45,000 looks like a Department Head approval but converts to EUR 53,355.47, a Finance Director), must-decline cases (2024 data, approver authority), a must-clarify case (an invoice that isn't identified) and a prompt injection. Run it on every prompt or model change and track each check's pass rate, not just one total. False declines count as failures, because over-refusal is also a quality problem.
 3. **In production:** grounding-failure rate, decline rate, the rate at which declared and observed routes disagree, analyst feedback, and a weekly sample reviewed by a Finance controller. Their corrections become new eval cases.
 
 **Known gap:** the grounding check proves a figure exists in the evidence, not that it is attached to the right entity. Swapping two vendors' totals would pass it. The eval catches that by pairing figures with names; a per-claim check would close it properly.
@@ -78,7 +78,7 @@ Three layers, cheapest first:
 
 - `GET /summary`: net, gross and credit-note totals; breakdown by currency (original and EUR) and by vendor status; policy flag counts (missing PO, missing approver, non-active vendor, credit notes); FX basis; policy version; source-file hashes.
 - `POST /ask {question, history[]}` returns:
-  - `status`: `answered`, `declined` or `unverified`
+  - `status`: `answered`, `clarify`, `declined` or `unverified`
   - `answer`, `missing_information`, `caveats`
   - `route {declared, observed, rationale, consistent}`
   - `evidence {policy[], tool_calls[], rows[], fx_rates[]}`
@@ -96,14 +96,14 @@ Three layers, cheapest first:
 
 | Run | Cases fully passed | Checks passed | Notes |
 |---|---|---|---|
-| Stub | 8/10 | 42/44 | Fails segregation-of-duties and injection, as expected. The stub's rules were written for these question shapes, so this result shows the harness works; it is not evidence of answer quality |
+| Stub | 9/10 | 43/44 | Fails the injection case, as expected. The stub's rules were written for these question shapes, so this result shows the harness works; it is not evidence of answer quality |
 | Claude (`claude-opus-5-5`) | [FILL: run with API key] | | |
 
 ## Time spent and next steps
 
 [FILL: actual time, in your own words.]
 
-Next: run the LLM eval and fix what it finds; a per-claim grounding check (figure bound to entity); a role directory so approver authority can be checked; chat persistence; streaming.
+Next: run the LLM eval and fix what it finds; a per-claim grounding check (figure bound to entity); one audit record per stage; a role directory so approver authority can be checked; chat persistence; streaming.
 
 ## Design document
 

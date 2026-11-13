@@ -28,7 +28,7 @@ Finance analysts cross-reference invoices against the procurement policy: approv
 |---|---|---|---|---|---|
 | 0 | Intake | Code | Question length; history must alternate | 422 Bad request | **Built** |
 | 1 | Source integrity | Code | Policy version pinned to the rule set; source-file fingerprints; ECB rate for every invoice date | Rules marked stale; "no rate for this date" | **Partial** (version pin and fingerprints built; not yet shown in the UI) |
-| 2 | Plan | LLM | Choose sources and tool calls, or decline | Wrong route (declared vs actual sources compared) | **Built** for answer and decline; **Planned:** a "clarify" outcome |
+| 2 | Plan | LLM | Choose sources and tool calls, ask a clarifying question, or decline | Wrong route (declared vs actual sources compared) | **Built:** answer, clarify, or decline |
 | 3 | Execute | Code | Run the tools; validate every argument | Invalid arguments returned to the model as errors | **Built** |
 | 4 | Compose | LLM | Answer in a fixed JSON format: status, answer, sources, clauses, caveats, what's missing | Malformed output becomes an error | **Built**; **Planned:** structured claims |
 | 5 | Verify | Code | Every number, invoice ID and clause in the answer must exist in the evidence | Status "Unverified", naming the untraced item | **Built** (number-level); **Planned:** claim-level |
@@ -95,10 +95,11 @@ Typed tools were chosen over text-to-SQL. They are less flexible, but every argu
   - the three brief questions;
   - a currency trap;
   - a compliance check;
-  - questions the data cannot answer (approver authority, segregation of duties, 2024);
+  - questions the data cannot answer (approver authority, 2024);
+  - an ambiguous question that must be clarified (an invoice not identified);
   - a prompt injection.
 
-**Results:** the stub passes 8/10. That proves the scoring harness works, not quality: the stub's keyword rules were written for these questions. The LLM run is reported in the README.
+**Results:** the stub passes 9/10 (it fails the injection case). That proves the scoring harness works, not quality: the stub's keyword rules were written for these questions. The LLM run is reported in the README.
 
 ### Proposed rubric
 
@@ -159,7 +160,7 @@ Any number in the answer that isn't backed by a claim is rejected. A swapped ven
   - policy flag counts;
   - FX basis, policy version, source fingerprints.
 - `POST /ask {question, history[]}` returns:
-  - `status`: answered, declined or unverified;
+  - `status`: answered, clarify, declined or unverified;
   - `answer`, `missing_information`, `caveats`;
   - `route`: declared, observed, rationale, consistent;
   - `evidence`: policy clauses, tool calls, invoice rows, FX rates;
@@ -199,8 +200,7 @@ Any number in the answer that isn't backed by a claim is rejected. A swapped ven
 - **Next, in order:**
   1. Run and fix the LLM eval.
   2. Structured claims, with figures in the answer linked to their rows.
-  3. A clarify outcome.
-  4. One audit record per stage.
-  5. Source integrity shown in the UI.
-  6. Counterfactual eval cases.
-  7. Grow the eval to 50+ cases, with confidence intervals.
+  3. One audit record per stage.
+  4. Source integrity shown in the UI.
+  5. Counterfactual eval cases.
+  6. Grow the eval to 50+ cases, with confidence intervals.

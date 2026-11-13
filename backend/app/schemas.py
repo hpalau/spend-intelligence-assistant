@@ -32,7 +32,7 @@ class AskRequest(BaseModel):
 
 class FinalAnswer(BaseModel):
     """What the model must return as its final message (enforced by JSON schema)."""
-    status: Literal["answered", "declined"]
+    status: Literal["answered", "clarify", "declined"]
     answer: str
     sources: list[Source]
     route_rationale: str
@@ -98,7 +98,7 @@ class Meta(BaseModel):
 
 
 class AskResponse(BaseModel):
-    status: Literal["answered", "declined", "unverified"]
+    status: Literal["answered", "clarify", "declined", "unverified"]
     answer: str
     missing_information: str | None
     caveats: list[str]

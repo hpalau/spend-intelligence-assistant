@@ -26,7 +26,7 @@ export interface InvoiceRow {
 }
 
 export interface AskResponse {
-  status: "answered" | "declined" | "unverified";
+  status: "answered" | "clarify" | "declined" | "unverified";
   answer: string;
   missing_information: string | null;
   caveats: string[];

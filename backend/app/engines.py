@@ -189,6 +189,12 @@ class StubEngine:
         if other_year:
             return EngineOutput(_decline(f"The dataset covers 2025 only; there is no data for {other_year.group(1)}."), calls)
 
+        if not invoice and re.search(r"\b(the|this|that) invoice\b", q):
+            return EngineOutput(FinalAnswer(
+                status="clarify", answer="Which invoice do you mean? Please give its invoice number (it starts with INV-).",
+                sources=[], route_rationale="The question refers to an invoice without identifying it.",
+                policy_sections=[], caveats=[], missing_information=None), calls)
+
         if invoice:
             r = call("check_invoice", {"invoice_number": invoice.group(0).upper()})
             if r is None:
