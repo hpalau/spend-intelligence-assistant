@@ -96,8 +96,13 @@ Three layers, cheapest first:
 
 | Run | Cases fully passed | Checks passed | Notes |
 |---|---|---|---|
-| Stub | 9/10 | 43/44 | Fails the injection case, as expected. The stub's rules were written for these question shapes, so this result shows the harness works; it is not evidence of answer quality |
-| Claude (`claude-opus-5-5`) | [FILL: run with API key] | | |
+| Stub | 9/10 | 43/44 | Fails the injection case. The stub's rules were written for these question shapes, so this only shows the harness works; it is not evidence of answer quality |
+| Claude, run 1 | 8/10 | 41/44 | Both failures were **bugs in my checker**, not in the answers: figures with a currency code attached ("EUR53,355.47") were misread, and an example invoice number in a clarifying question was flagged. Both fixed, with a regression test |
+| Claude, run 2 | 9/10 | 42/44 | **A real error, caught.** Asked for missing-PO invoices, Claude counted currencies itself ("3 GBP, 3 USD, 15 EUR"; the truth is 3, 4, 14). The grounding check flagged "15" and marked the answer **Unverified**. It did **not** catch "3 USD", because the number 3 appears elsewhere in the evidence: the known gap, observed live. The fix is structured claims, not prompt tuning |
+| Claude, run 3 | 10/10 | 44/44 | Same version as run 2: the same case passes or fails across runs, so pass rates need repeated runs |
+| Claude, run 4 | 10/10 | 44/44 | Prompt v2026-11-13.3, which requires declaring "policy" whenever a clause is cited. Declared and actual routes now agree in 10/10 cases |
+
+Run files are in `eval/runs/`. Each answer took 7–12 s and used about 17–25k input tokens (much of it cached) and about 1k output tokens.
 
 ## Time spent and next steps
 

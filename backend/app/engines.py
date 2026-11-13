@@ -84,7 +84,8 @@ class LLMEngine:
 
         for _ in range(MAX_STEPS):
             response = self._create(messages)
-            tokens_in += response.usage.input_tokens
+            u = response.usage  # cached prompt tokens are reported separately from input_tokens
+            tokens_in += u.input_tokens + (u.cache_read_input_tokens or 0) + (u.cache_creation_input_tokens or 0)
             tokens_out += response.usage.output_tokens
 
             if response.stop_reason == "refusal":

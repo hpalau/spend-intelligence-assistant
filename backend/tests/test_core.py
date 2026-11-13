@@ -51,6 +51,10 @@ def test_number_extraction_ignores_identifiers():
     assert [v for _, v in extract_numbers(text)] == [1131481.11, 21, 1.13e6]
 
 
+def test_currency_code_glued_to_figure_is_read_whole():
+    assert [v for _, v in extract_numbers("EUR53,355.47 and GBP45,000")] == [53355.47, 45000.0]
+
+
 def test_grounding_flags_invented_figure():
     result = tools.spend_summary(SpendSummaryArgs())
     good = check_answer(f"Total is EUR {result['matched_total_eur']:,.2f}", [], [result], policy, "q")

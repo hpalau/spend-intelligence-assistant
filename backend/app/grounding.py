@@ -32,7 +32,8 @@ NOT_QUANTITIES = [
     re.compile(r"^\s*\d+[.)]\s", re.MULTILINE),  # list numbering
     re.compile(r"\bv\d+(?:\.\d+)*\b", re.IGNORECASE),  # versions
 ]
-NUMBER = re.compile(r"(?<![\w.])(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?\s*(k|m|mn|bn|million|thousand)?\b", re.IGNORECASE)
+# The lookbehind allows letters right before a figure ("EUR53,355.47") but not digits or separators.
+NUMBER = re.compile(r"(?<![\d.,])(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?\s*(k|m|mn|bn|million|thousand)?\b", re.IGNORECASE)
 MULTIPLIER = {"k": 1e3, "thousand": 1e3, "m": 1e6, "mn": 1e6, "million": 1e6, "bn": 1e9}
 
 
