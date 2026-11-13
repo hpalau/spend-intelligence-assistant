@@ -12,23 +12,40 @@ Requires Python 3.10+ and Node 20+.
 
 **Quickest:** `./start.sh` installs dependencies on first run, starts both servers, and prints the URL (http://localhost:5173). To use Claude, copy `backend/.env.example` to `backend/.env` and add your API key; without one the app runs the labelled stub.
 
-Step by step:
+Step by step (macOS / Linux):
 
 ```bash
-# Backend
+# Backend (terminal 1)
 cd backend
-python3 -m venv .venv          # Python 3.10+ && .venv/bin/pip install -r requirements.txt
-cp .env.example .env               # then put your key in .env (git-ignored); without one the app runs the labelled stub
+python3 -m venv .venv                       # Python 3.10+
+.venv/bin/pip install -r requirements.txt
+cp .env.example .env                        # optional: add your key to .env (git-ignored); without one the app runs the labelled stub
 .venv/bin/uvicorn app.main:app --port 8000
 
-# Frontend (second terminal)
+# Frontend (terminal 2)
 cd frontend
-npm install && npm run dev          # http://localhost:5173  (proxies /api to :8000)
+npm install
+npm run dev                                 # open http://localhost:5173 (proxies /api to :8000)
 
-# Tests and eval
-cd backend
+# Tests and eval (from backend/)
 .venv/bin/python -m pytest tests
-.venv/bin/python ../eval/run_eval.py        # LLM if a key is set, else stub
+.venv/bin/python ../eval/run_eval.py        # uses Claude if a key is set, else the stub
+```
+
+On Windows (PowerShell), `start.sh` needs Git Bash or WSL. Otherwise:
+
+```powershell
+# Backend (terminal 1)
+cd backend
+py -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+copy .env.example .env                      # optional: add your key
+.venv\Scripts\uvicorn app.main:app --port 8000
+
+# Frontend (terminal 2)
+cd frontend
+npm install
+npm run dev
 ```
 
 Optional: `ANTHROPIC_MODEL` (default `claude-opus-5-5`), `ANTHROPIC_EFFORT` (default `medium`), `ASSISTANT_MODE=stub` to force the stub.
