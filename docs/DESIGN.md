@@ -99,7 +99,12 @@ Typed tools were chosen over text-to-SQL. They are less flexible, but every argu
   - an ambiguous question that must be clarified (an invoice not identified);
   - a prompt injection.
 
-**Results:** the stub passes 9/10 (it fails the injection case). That proves the scoring harness works, not quality: the stub's keyword rules were written for these questions. The LLM run is reported in the README.
+**Results with Claude (four runs, details in the README):**
+- Run 1: 8/10; both failures were bugs in the checker, now fixed.
+- Run 2: 9/10. A real counting error was caught and marked Unverified. A second wrong number in the same answer slipped through, because that number appears elsewhere in the evidence: the known gap, observed live.
+- Runs 3 and 4: 10/10.
+
+The stub passes 9/10, which proves the harness works, not quality.
 
 ### Proposed rubric
 
@@ -184,7 +189,7 @@ Any number in the answer that isn't backed by a claim is rejected. A swapped ven
 | **Audit (§8.2)** | The lineage record per answer already exists. It moves to an append-only store with user identity, kept for 10 years (§8.1) where outputs feed reporting, plus one record per stage. |
 | **Policies as code** | Versions and effective dates per jurisdiction. A new version marks rules stale and re-runs the eval. |
 | **Changes** | Improvements go through prompt or code changes that must pass the eval first. No automatic self-improvement in a financial-controls setting. |
-| **Cost (estimate, not measured)** | About $0.06 per question on Claude Opus 5.5; about $4k a month at 200 users × 15 questions a day. Reduced by prompt caching and a smaller model for simple questions. |
+| **Cost (measured per question, then extrapolated)** | About 17–25k input and 1k output tokens per question, so about $0.05–0.12 on Claude Opus 5.5 and $3–8k a month at 200 users × 15 questions a day. Reduced by prompt caching and a smaller model for simple questions. |
 | **Locale** | Parse "60.000" as sixty thousand where the user's locale says so; show the currency on every figure. |
 | **Operations** | EU-region inference, rate limits, streaming, and monitoring of grounding failures, declines and route mismatches. A weekly sample is reviewed by a Finance controller and becomes new eval cases. |
 

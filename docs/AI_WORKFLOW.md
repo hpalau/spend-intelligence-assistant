@@ -51,4 +51,7 @@ Checks that were run, not assumed:
 - **The eval** run against the stub: 8/10 cases.
 - **Rendered in a real browser** (headless Chrome, scripted to ask questions). This caught a bug the TypeScript build did not: in current Chrome `scrollIntoView` returns a Promise, which React treated as an effect clean-up and crashed the chat panel, leaving the page blank. It also caught a clipped summary column, raw `**` markdown in the policy quotes, and an unhelpful error message when the backend is down.
 
-**Not verified at build time:** the LLM path itself. No API key was available in the session, so the Anthropic code has not run against the live API. [FILL: update once you have run `run_eval.py` with a key.]
+- **The live Claude path** (13 Nov): four eval runs (8, 9, 10 and 10 out of 10), all recorded in `eval/runs/`.
+  - Run 1 exposed two bugs in the checker itself, both now fixed.
+  - Run 2 produced a real error: Claude counted invoices by currency itself and got two counts wrong. The checker caught one and marked the answer Unverified; the other slipped through because the same number appears elsewhere in the evidence. This is the known gap, and structured claims are the planned fix.
+  - Run 4 followed a prompt change so that the declared sources match the actual ones.
