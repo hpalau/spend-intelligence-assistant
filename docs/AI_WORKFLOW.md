@@ -35,7 +35,15 @@ After that, Claude built it. The steps are below.
 
 ## Who decided what
 
-[FILL: in your own words: which choices were yours, where you pushed back, what you would have done differently.]
+I directed the design and made the decisions; Claude Code proposed options and wrote the code; I verified the output.
+
+My decisions:
+- the LLM path (Claude, with a labelled stub);
+- the eval set as the single extra;
+- separating the stages rather than the agents (Architecture 3), after testing my own multi-agent proposal against it;
+- rejecting the all-LLM and multi-agent architectures;
+- adding a "clarify" outcome to the UI;
+- flagging locale-dependent number formats ("60.000") as a production risk.
 
 Proposed by Claude and accepted by me:
 - converting at ECB rates per invoice date instead of a fixed rate

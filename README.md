@@ -106,7 +106,7 @@ Run files are in `eval/runs/`. Each answer took 7–12 s and used about 17–25k
 
 ## Time spent and next steps
 
-[FILL: actual time, in your own words.]
+About 3 hours of directed work across sessions on 9, 12 and 13 November, built with Claude Code. I directed the design and made the decisions; Claude Code proposed options and wrote the code; I verified the output.
 
 Next: run the LLM eval and fix what it finds; a per-claim grounding check (figure bound to entity); one audit record per stage; a role directory so approver authority can be checked; chat persistence; streaming.
 
